@@ -1,2 +1,2 @@
-# unif
+# unifyer
 Unifier for Javascript
