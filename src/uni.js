@@ -1,25 +1,21 @@
+const { tagged } = require("styp");
+
+const Var = tagged("Var",["name"]);
+
 function atomic(value) {
     return Object(value) !== value
 }
 
-function variable(v) {
-    return {name:v, type:"var"}
-}
-
-function isvariable(v) {
-    return typeof v === "object" && v.type === "var";
-}
-
 function iscompound(v) {
-    return !atomic(v) && v.type !== "var";
+    return !atomic(v) && !Var.is(v);
 }
 
 const failed = Symbol("Failed");
 
 function occurs(v,e,subst) {
     if(atomic(e)) return false;
-    if(isvariable(e) && v.name === e.name) return true;
-    if(isvariable(e) && e.name in subst) return occurs(v,subst[e.name],subst);
+    if(Var.is(e) && v.name === e.name) return true;
+    if(Var.is(e) && e.name in subst) return occurs(v,subst[e.name],subst);
     if(iscompound(e)) {
         for(let ele of e) {
             if(occurs(v,ele,subst)) return true;
@@ -30,7 +26,7 @@ function occurs(v,e,subst) {
 
 function unifyvar(f1,f2,subst) {
     if(f1.name in subst) return unify(subst[f1.name],f2,subst);
-    if(isvariable(f2) && f2.name in subst) return unify(f1,subst[f2.name],subst);
+    if(Var.is(f2) && f2.name in subst) return unify(f1,subst[f2.name],subst);
     if(occurs(f1,f2,subst)) return failed;
     subst[f1.name] = f2;
     return subst;
@@ -39,9 +35,9 @@ function unifyvar(f1,f2,subst) {
 function unify(f1,f2,subst={}) {
     if(subst === failed) return failed;
     if(atomic(f1) && atomic(f2)) return f1 === f2?subst:failed;
-    if(isvariable(f1)) return unifyvar(f1,f2,subst);
-    if(isvariable(f2)) return unifyvar(f2,f1,subst);
-    if(f1.length === f2.length) {
+    if(Var.is(f1)) return unifyvar(f1,f2,subst);
+    if(Var.is(f2)) return unifyvar(f2,f1,subst);
+    if(Array.isArray(f1) && Array.isArray(f2) && f1.length === f2.length) {
         let prev = {}
         for(let i = 0; i < f1.length;i++) {
             prev = unify(f1[i],f2[i],prev);
@@ -56,10 +52,9 @@ function unify_all(eqs) {
 }
 
 
-let u = unify_all([
-    [["g",variable("x2")],variable("x1")],
-    [["f",variable("x1"),["h",variable("x1")],variable("x2")],["f",["g",variable("x3")],variable("x4"),variable("x3")]],
-]);
-console.log(u);
+const u1 = unify(["g",Var("x2")],Var("x1"));
+const u2 = unify(["f",Var("x1"),["h",Var("x1")],Var("x2")],["f",["g",Var("x3")],Var("x4"),Var("x3")]);
+console.log(u1);
+console.log(u2);
 
 // console.log(unify(variable("x"),["f",variable("x")]));
