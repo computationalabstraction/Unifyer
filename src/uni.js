@@ -44,6 +44,12 @@ function unify(f1,f2,subst={}) {
         }
         return prev;
     }
+    if(typeof f1 === "object" && typeof f2 === "object") {
+        const k1 = Object.keys(f1);
+        const k2 = Object.keys(f2);
+        const common = Array.from([...k1,...k2]).filter(k => k1.includes(k) && k2.includes(k));
+        return common.reduce((prev,key) => unify(f1[key],f2[key],prev),{})   
+    }
     return failed;
 }
 
