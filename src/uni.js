@@ -46,20 +46,24 @@ function unify(f1,f2,subst={}) {
     return failed;
 }
 
-function replace(v,subst) {
-    if(Var.is(subst[v.name])) return replace(subst[v.name],subst);
+function replace_one(v,subst) {
+    if(Var.is(subst[v.name]) && subst[v.name].name in subst) return replace_one(subst[v.name],subst);
     return subst[v.name];
 }
 
+function replace(subst) {
+    Object.keys(subst).forEach(k => Var.is(subst[k])? subst[k] = replace_one(subst[k],subst):0)
+    return subst;
+}
+
 function unify_all(eqs) {
-    const out = eqs.reduce((acc,v) => unify(v[0],v[1],acc),{});
-    Object.keys(out).forEach(k => Var.is(out[k])? out[k] = replace(out[k],out):0);
-    return out;
+    return replace(eqs.reduce((acc,v) => unify(v[0],v[1],acc),{}));
 }
 
 module.exports = {
     unify,
     unify_all,
     failed,
+    replace,
     Var
 };
