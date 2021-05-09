@@ -11,6 +11,8 @@ test('unify', () => {
     });
     expect(unify(Var("x"),["f",Var("x")])).toEqual(failed);
     expect(unify({x:10, y:20},{i:100, j:200})).toEqual({});
+    expect(unify(10,20)).toEqual(failed);
+    expect(unify(10,{x:10, y:20})).toEqual(failed);
 });
 
 test("unify_all", () => {

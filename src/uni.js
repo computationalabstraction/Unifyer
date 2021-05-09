@@ -2,6 +2,9 @@ const { tagged } = require("styp");
 
 const Var = tagged("Var",["name"]);
 
+const keydef = Date.now().toString(); 
+const _ = Var(keydef);
+
 function atomic(value) {
     return Object(value) !== value
 }
@@ -65,5 +68,6 @@ module.exports = {
     unify_all,
     failed,
     replace,
-    Var
+    Var,
+    _
 };
