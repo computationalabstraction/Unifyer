@@ -1,4 +1,4 @@
-const { unify, unify_all, failed, Var } = require("../src/uni");
+const { unify, unify_all, failed, Var, _} = require("../src/uni");
 
 test('unify', () => {
     expect(unify(["g",Var("x2")],Var("x1"))).toEqual({
@@ -13,6 +13,7 @@ test('unify', () => {
     expect(unify({x:10, y:20},{i:100, j:200})).toEqual({});
     expect(unify(10,20)).toEqual(failed);
     expect(unify(10,{x:10, y:20})).toEqual(failed);
+    expect(unify({x:_},{x:100, y:30})).toEqual({x:100});
 });
 
 test("unify_all", () => {
