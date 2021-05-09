@@ -4,13 +4,12 @@ Unifier for Javascript
 ## Documentation
 > underconstruction
 
-#### API
+##### API
 * `unify`
 * `unify_all`
 * `Var`
 * `replace`
 * `failed`
-
 
 
 #### `unify(eq1: Object | Primitve, eq2: Object | Primitve, subst: Object = {}) -> Object | Symbol`
