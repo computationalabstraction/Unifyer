@@ -9,7 +9,7 @@ function atomic(value) {
     return Object(value) !== value
 }
 
-function iscompound(v) {
+function compound(v) {
     return !atomic(v) && !Var.is(v);
 }
 
@@ -19,7 +19,7 @@ function occurs(v,e,subst) {
     if(atomic(e)) return false;
     if(Var.is(e) && v.name === e.name) return true;
     if(Var.is(e) && e.name in subst) return occurs(v,subst[e.name],subst);
-    if(iscompound(e)) {
+    if(compound(e)) {
         for(let ele of e) {
             if(occurs(v,ele,subst)) return true;
         }   
@@ -40,7 +40,7 @@ function unify(f1,f2,subst={}) {
     if(atomic(f1) && atomic(f2)) return f1 === f2?subst:failed;
     if(Var.is(f1)) return unifyvar(f1,f2,subst);
     if(Var.is(f2)) return unifyvar(f2,f1,subst);
-    if(iscompound(f1) && iscompound(f2)) {
+    if(compound(f1) && compound(f2)) {
         const k1 = Object.keys(f1);
         const k2 = Object.keys(f2);
         const common = Array.from(new Set(Array.from([...k1,...k2]).filter(k => k1.includes(k) && k2.includes(k))));
