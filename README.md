@@ -22,7 +22,7 @@ const sbs1 = unify(10, 10);
 console.log(sbs1); // -> {} empty object if unification is successful
 
 const sbs2 = unify(10, 20);
-console.log(sbs2); // -> failed 
+console.log(sbs2 === failed); // -> true 
 
 const sbs3 = unify([10, Var("x")],[Var("y"), 20]);
 console.log(sbs3); // -> { x: 20, y:10 } 
