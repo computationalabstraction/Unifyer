@@ -2,8 +2,7 @@ const { tagged } = require("styp");
 
 const Var = tagged("Var",["name"]);
 
-const keydef = Date.now().toString(); 
-const _ = Var(keydef);
+const _ = Var(Date.now().toString());
 
 function atomic(value) {
     return Object(value) !== value
