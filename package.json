@@ -1,8 +1,8 @@
 {
   "name": "unifyer",
   "version": "0.0.1",
-  "description": "Unification Algorithm",
-  "main": "uni.js",
+  "description": "Unification Algorithm for Javascript (pre-release)",
+  "main": "src/uni.js",
   "scripts": {
     "test": "npx jest --coverage"
   },
