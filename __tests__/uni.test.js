@@ -14,6 +14,7 @@ test('unify', () => {
     expect(unify(10,20)).toEqual(failed);
     expect(unify(10,{x:10, y:20})).toEqual(failed);
     expect(unify({x:_},{x:100, y:30})).toEqual({x:100});
+    expect(unify([ 'job', [ 'Fect', 'Cy', 'D' ], [ 'computer', 'programmer' ] ],[ 'job', Var("x"), [ 'computer' ] ])).toEqual({x:[ 'Fect', 'Cy', 'D' ]});
 });
 
 test("unify_all", () => {
